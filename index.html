@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Movie Night : un exercice JavaScript pour trouver un film selon tes envies.">
+    <title>Movie Night — Ta prochaine séance</title>
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="index.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="./index.html" aria-label="Movie Night, accueil">
+            <span class="brand-icon" aria-hidden="true">✳</span>
+            <span>movie<span class="brand-light">night.</span></span>
+        </a>
+        <div class="header-actions">
+            <button class="text-btn" id="compact-btn" type="button">Vue compacte</button>
+            <button class="outline-btn" id="open-invite-btn" type="button">Recevoir une invitation <span aria-hidden="true">↗</span></button>
+        </div>
+    </header>
+
+    <main class="main-layout">
+        <section class="picker" aria-labelledby="page-title">
+            <p class="eyebrow"><span class="small-dot"></span> UNE SOIRÉE, UN BON FILM</p>
+            <h1 id="page-title">Ce soir, on<br>regarde <span>quoi&nbsp;?</span></h1>
+            <p class="intro">Choisis ton genre, règle tes préférences et laisse le hasard faire le reste.</p>
+
+            <div class="selection-panel">
+                <fieldset class="genre-fieldset">
+                    <legend><span class="step-number">01</span> Ton genre préféré</legend>
+                    <!-- Mission 2 : remplacer ce contenu par des boutons radio générés en JS. -->
+                    <div class="genre-options" id="genre-options">
+                        <p class="placeholder">Les genres seront ajoutés par ton JavaScript.</p>
+                    </div>
+                </fieldset>
+
+                <div class="preferences">
+                    <label class="field-label" for="duration-filter"><span class="step-number">02</span> Le temps que tu as</label>
+                    <select id="duration-filter" name="duration">
+                        <option value="0">J'ai toute la soirée</option>
+                        <option value="60">60 minutes maximum</option>
+                        <option value="90">90 minutes maximum</option>
+                        <option value="120">120 minutes maximum</option>
+                    </select>
+                    <label class="checkbox-option" for="short-only">
+                        <input type="checkbox" id="short-only">
+                        <span>Films courts uniquement <small>90 minutes maximum</small></span>
+                    </label>
+                    <div id='res'>
+                    </div>
+                </div>
+
+                <button class="primary-btn" id="find-movie-btn" type="button">Choisir mon film <span aria-hidden="true">↗</span></button>
+                <p class="feedback" id="selection-message" role="status" aria-live="polite">Choisis un genre pour commencer.</p>
+            </div>
+            <p class="small-note">12 films fictifs. Aucune inscription nécessaire pour choisir.</p>
+        </section>
+
+        <aside class="visual-panel" aria-label="Une invitation à découvrir ton prochain film">
+            <div class="visual-top"><span>LA SÉLECTION DU SOIR</span><span aria-hidden="true">✦</span></div>
+            <div class="poster-art" aria-hidden="true">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+                <div class="planet"></div>
+                <span class="star star-one">✦</span>
+                <span class="star star-two">✧</span>
+                <span class="star star-three">✦</span>
+                <p class="poster-caption">Le prochain<br><em>coup de cœur.</em></p>
+            </div>
+            <div class="visual-bottom"><p>Moins de temps à choisir.<br>Plus de temps à regarder.</p><span class="play-icon" aria-hidden="true">▶</span></div>
+        </aside>
+    </main>
+
+    <footer class="site-footer"><span>MOVIE NIGHT</span><p>Projet d'entraînement · HTML, CSS &amp; JavaScript</p><span>À toi de jouer.</span></footer>
+
+    <!-- Mission 5 : remplir cette fenêtre avec le film tiré au hasard. -->
+    <div class="modal-overlay" id="movie-modal">
+        <section class="modal-card movie-card" role="dialog" aria-modal="true" aria-labelledby="movie-title">
+            <button class="close-btn" id="movie-close-btn" type="button" aria-label="Fermer la proposition" >×</button>
+            <div class="movie-cover" id="movie-cover"><span id="movie-symbol" aria-hidden="true">🍿</span><span class="cover-label">TON FILM DU SOIR</span></div>
+            <div class="movie-body">
+                <p class="eyebrow">LE HASARD A BIEN FAIT LES CHOSES</p>
+                <h2 id="movie-title">Le titre du film</h2>
+                <p class="movie-meta" id="movie-meta">Genre · Durée · Note</p>
+                <p class="movie-description" id="movie-description">La description du film sera affichée ici.</p>
+                <button class="primary-btn" id="another-movie-btn" type="button">Une autre proposition <span aria-hidden="true">↻</span></button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Mission 7 : ouvrir après 2 secondes, puis gérer le formulaire et les trois écrans. -->
+    <div class="modal-overlay" id="invite-modal">
+        <section class="modal-card invite-card" role="dialog" aria-modal="true" aria-labelledby="invite-title">
+            <button class="close-btn" id="invite-close-btn" type="button" aria-label="Fermer les invitations">×</button>
+            <div id="invite-form-screen">
+                <span class="invite-icon" aria-hidden="true">✉</span>
+                <p class="eyebrow">ON GARDE UNE PLACE POUR TOI</p>
+                <h2 id="invite-title">Les bonnes soirées<br>commencent ici.</h2>
+                <p class="modal-intro">Inscris-toi pour découvrir notre prochaine sélection.</p>
+                <form id="invite-form">
+                    <label class="field-label" for="full-name">Ton prénom</label>
+                    <input id="full-name" name="fullName" type="text" placeholder="Ex. Oussema" minlength="2" maxlength="40" autocomplete="given-name" required>
+                    <label class="field-label" for="email">Ton adresse e-mail</label>
+                    <input id="email" name="email" type="email" placeholder="toi@exemple.com" autocomplete="email" required>
+                    <button class="primary-btn" id="invite-submit-btn" type="submit">Je réserve ma place <span aria-hidden="true">↗</span></button>
+                    <p class="form-note">Formulaire de démonstration : aucun e-mail n'est envoyé.</p>
+                </form>
+            </div>
+            <div class="state-screen hidden" id="invite-loading-screen" role="status" aria-live="polite">
+                <span class="spinner" aria-hidden="true"></span>
+                <h2>On prépare ton invitation…</h2>
+                <p>Encore un petit instant.</p>
+            </div>
+            <div class="state-screen hidden" id="invite-success-screen" role="status" aria-live="polite">
+                <span class="success-icon" aria-hidden="true">✓</span>
+                <h2>Ta place est prête&nbsp;!</h2>
+                <p>Merci, <strong id="invite-name"></strong>.</p>
+                <p class="success-email" id="invite-email"></p>
+                <p class="form-note">Ceci est une confirmation simulée.</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
